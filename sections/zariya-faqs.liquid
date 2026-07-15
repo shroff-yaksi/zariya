@@ -1,0 +1,53 @@
+{%- comment -%} Zariya House — FAQs {%- endcomment -%}
+<div class="zariya">
+  <section class="zh-banner parchment">
+    <div class="zh-banner__eyebrow">{{ section.settings.eyebrow | default: 'Help Centre' }}</div>
+    <h1>{{ section.settings.heading | default: 'Frequently Asked Questions' }}</h1>
+    <p>{{ section.settings.subheading | default: 'Everything you need to know about ordering, personalising and delivering your Zariya hampers.' }}</p>
+    <div class="zh-divider" style="--w:90px"><span class="line"></span><span style="font-size:13px">❖</span><span class="line"></span></div>
+  </section>
+
+  <section class="parchment" style="padding:46px 48px 64px">
+    <div class="zh-prod-accordion" style="max-width:820px;margin:0 auto;border-top:none">
+      {%- for block in section.blocks -%}
+        <details {% if forloop.first %}open{% endif %} {{ block.shopify_attributes }}>
+          <summary>{{ block.settings.question }}</summary>
+          <p>{{ block.settings.answer }}</p>
+        </details>
+      {%- endfor -%}
+    </div>
+    <div style="text-align:center;margin-top:40px">
+      <p style="font-family:var(--f-display);font-size:20px;color:var(--maroon);margin-bottom:16px">Still have a question?</p>
+      <a href="{{ section.settings.contact_link | default: '/pages/contact' }}" class="btn btn-maroon">Contact Us →</a>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Zariya FAQs",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Help Centre" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Frequently Asked Questions" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Everything you need to know about ordering, personalising and delivering your Zariya hampers." },
+    { "type": "url", "id": "contact_link", "label": "Contact button link" }
+  ],
+  "blocks": [
+    { "type": "qa", "name": "Question", "settings": [
+      { "type": "text", "id": "question", "label": "Question", "default": "How long does delivery take?" },
+      { "type": "textarea", "id": "answer", "label": "Answer", "default": "Hampers are dispatched within 3–5 working days, with free delivery across India." }
+    ]}
+  ],
+  "presets": [{
+    "name": "Zariya FAQs",
+    "blocks": [
+      {"type":"qa","settings":{"question":"How long does delivery take?","answer":"Ready hampers are dispatched within 3–5 working days. Personalised or bulk orders take 7–10 days. We deliver free across India."}},
+      {"type":"qa","settings":{"question":"Can I personalise a hamper?","answer":"Yes — most hampers can be customised with your choice of contents, a hand-written note, and engraving on the wooden chest. Add your preferences at checkout or contact us for bespoke requests."}},
+      {"type":"qa","settings":{"question":"Do you offer corporate and bulk gifting?","answer":"Absolutely. We specialise in branded corporate hampers with bulk pricing, custom branding and coordinated pan-India dispatch. Visit our Corporate Gifting page to request a quote."}},
+      {"type":"qa","settings":{"question":"What is your return policy?","answer":"Ready-made hampers can be returned within 7 days if unopened. Personalised and made-to-order hampers are non-returnable, as each is crafted specifically for you."}},
+      {"type":"qa","settings":{"question":"How should I care for the wooden chest?","answer":"Wipe with a dry cloth and keep away from direct moisture to preserve the hand-carving and finish. Each chest is a keepsake meant to last for years."}},
+      {"type":"qa","settings":{"question":"Which payment methods do you accept?","answer":"We accept all major cards, UPI, net banking and popular wallets through our secure checkout."}}
+    ]
+  }]
+}
+{% endschema %}

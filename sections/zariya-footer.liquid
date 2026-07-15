@@ -1,0 +1,49 @@
+{%- comment -%} Zariya House — Footer {%- endcomment -%}
+<div class="zariya">
+  <footer class="zh-footer">
+    <div class="zh-footer__row">
+      <div class="zh-footer__news">
+        <span>{{ section.settings.newsletter_label | default: 'Stay in Touch' }}</span>
+        {%- form 'customer' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div class="zh-foot-form">
+            <input type="email" name="contact[email]" placeholder="Your email" required>
+            <button type="submit">Subscribe</button>
+          </div>
+        {%- endform -%}
+      </div>
+      <div class="zh-footer__links">
+        {%- for link in section.settings.menu.links -%}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+          {%- unless forloop.last -%}<span class="dot">•</span>{%- endunless -%}
+        {%- else -%}
+          <a href="/pages/our-story">Our Story</a><span class="dot">•</span>
+          <a href="{{ routes.all_products_collection_url }}">Shop</a><span class="dot">•</span>
+          <a href="/pages/corporate-gifting">Corporate Gifting</a><span class="dot">•</span>
+          <a href="/pages/faqs">FAQs</a><span class="dot">•</span>
+          <a href="/pages/contact">Contact</a>
+        {%- endfor -%}
+        <div class="zh-footer__social">
+          {%- if section.settings.instagram != blank -%}<a href="{{ section.settings.instagram }}" aria-label="Instagram">{% render 'zariya-icons', name: 'instagram' %}</a>{%- endif -%}
+          {%- if section.settings.facebook != blank -%}<a href="{{ section.settings.facebook }}" aria-label="Facebook">{% render 'zariya-icons', name: 'facebook' %}</a>{%- endif -%}
+          {%- if section.settings.pinterest != blank -%}<a href="{{ section.settings.pinterest }}" aria-label="Pinterest">{% render 'zariya-icons', name: 'pinterest' %}</a>{%- endif -%}
+        </div>
+      </div>
+    </div>
+    <div class="zh-footer__copy">{{ section.settings.copyright | default: '© 2026 Zariya House. All Rights Reserved.' }}</div>
+  </footer>
+</div>
+
+{% schema %}
+{
+  "name": "Zariya Footer",
+  "settings": [
+    { "type": "text", "id": "newsletter_label", "label": "Newsletter label", "default": "Stay in Touch" },
+    { "type": "link_list", "id": "menu", "label": "Footer menu" },
+    { "type": "url", "id": "instagram", "label": "Instagram URL" },
+    { "type": "url", "id": "facebook", "label": "Facebook URL" },
+    { "type": "url", "id": "pinterest", "label": "Pinterest URL" },
+    { "type": "text", "id": "copyright", "label": "Copyright", "default": "© 2026 Zariya House. All Rights Reserved." }
+  ]
+}
+{% endschema %}

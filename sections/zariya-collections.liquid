@@ -1,0 +1,74 @@
+{%- comment -%} Zariya House — Collections (banner + large image cards) {%- endcomment -%}
+<div class="zariya">
+  <section class="zh-banner parchment">
+    <div class="zh-banner__eyebrow">{{ section.settings.eyebrow }}</div>
+    <h1>{{ section.settings.heading }}</h1>
+    <p>{{ section.settings.subheading }}</p>
+    <div class="zh-divider" style="--w:90px"><span class="line"></span><span style="font-size:13px">❖</span><span class="line"></span></div>
+  </section>
+
+  <section class="parchment" style="padding:50px 48px 64px">
+    <div class="grid-3 wrap">
+      {%- for block in section.blocks -%}
+        {%- assign soon = block.settings.coming_soon -%}
+        {%- capture coll_inner -%}
+          {%- if block.settings.image != blank -%}
+            <img src="{{ block.settings.image | image_url: width: 700 }}" alt="{{ block.settings.title | escape }}" width="700" height="466" loading="lazy">
+          {%- else -%}
+            <img src="{{ block.settings.fallback | default: 'card-wedding.png' | asset_url }}" alt="{{ block.settings.title | escape }}" width="700" height="466" loading="lazy">
+          {%- endif -%}
+          {%- if soon -%}<span class="coll-big__badge">Coming Soon</span>{%- endif -%}
+          <div class="coll-big__veil"></div>
+          <div class="coll-big__body">
+            <h3>{{ block.settings.title }}</h3>
+            <p>{{ block.settings.description }}</p>
+            <span class="view-link">{% if soon %}Coming Soon{% else %}Explore Collection →{% endif %}</span>
+          </div>
+        {%- endcapture -%}
+        {%- if soon -%}
+          <div class="coll-big coll-big--soon" {{ block.shopify_attributes }}>{{ coll_inner }}</div>
+        {%- else -%}
+          <a href="{{ block.settings.link | default: '#' }}" class="coll-big" {{ block.shopify_attributes }}>{{ coll_inner }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Zariya Collections",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Browse by Occasion" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Our Collections" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "From weddings to festivals, boardrooms to nurseries — find the perfect Zariya for every milestone." }
+  ],
+  "blocks": [
+    { "type": "collection", "name": "Collection", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Image" },
+      { "type": "select", "id": "fallback", "label": "Fallback image", "default": "card-wedding.png",
+        "options": [
+          {"value":"heritage-chest-1.jpg","label":"Heritage Chest"},
+          {"value":"card-wedding.png","label":"Wedding"},{"value":"card-festive.png","label":"Festive"},
+          {"value":"card-kids.png","label":"Kids"},{"value":"card-corporate.png","label":"Corporate"},
+          {"value":"hero.png","label":"Hero"}
+        ] },
+      { "type": "text", "id": "title", "label": "Title", "default": "Wedding Hampers" },
+      { "type": "textarea", "id": "description", "label": "Description", "default": "Trousseau chests and ceremonial gifts." },
+      { "type": "checkbox", "id": "coming_soon", "label": "Coming soon (badge, dim, no link)", "default": false },
+      { "type": "url", "id": "link", "label": "Link" }
+    ]}
+  ],
+  "presets": [{
+    "name": "Zariya Collections",
+    "blocks": [
+      {"type":"collection","settings":{"fallback":"card-wedding.png","title":"Wedding Hampers","description":"Trousseau chests and ceremonial gifts that honour every guest as family."}},
+      {"type":"collection","settings":{"fallback":"card-festive.png","title":"Festive Hampers","description":"Diwali, Eid, Raksha Bandhan and more — elegant delights for joyous celebrations."}},
+      {"type":"collection","settings":{"fallback":"card-kids.png","title":"Kids Hampers","description":"Whimsical, playful gifts crafted with love for the little ones."}},
+      {"type":"collection","settings":{"fallback":"card-corporate.png","title":"Corporate Gifting","description":"Sophisticated, brandable hampers that build lasting partnerships."}},
+      {"type":"collection","settings":{"fallback":"card-wedding.png","title":"Personalised Keepsakes","description":"Bespoke hampers engraved and curated around your story."}},
+      {"type":"collection","settings":{"fallback":"hero.png","title":"Signature Luxury Chests","description":"Our most opulent hand-carved wooden chests for milestone moments."}}
+    ]
+  }]
+}
+{% endschema %}

@@ -1,0 +1,44 @@
+{%- comment -%} Zariya House — Testimonials {%- endcomment -%}
+<div class="zariya">
+  <section class="zh-testi parchment">
+    <div class="zh-divider" style="margin-bottom:40px">
+      <span class="line"></span><span style="font-size:13px">❖</span>
+      <h2 style="font-family:var(--f-display);font-weight:600;font-size:36px;color:var(--maroon)">{{ section.settings.heading }}</h2>
+      <span style="font-size:13px">❖</span><span class="line"></span>
+    </div>
+    <div class="testi-grid">
+      {%- for block in section.blocks -%}
+        <div class="testi" {{ block.shopify_attributes }}>
+          <div class="testi__stars">★★★★★</div>
+          <p class="testi__quote">“{{ block.settings.quote }}”</p>
+          <div class="testi__author">{{ block.settings.author }}</div>
+          <div class="testi__role">{{ block.settings.role }}</div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Zariya Testimonials",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Loved by Gift-Givers" }
+  ],
+  "blocks": [
+    { "type": "testimonial", "name": "Testimonial", "settings": [
+      { "type": "textarea", "id": "quote", "label": "Quote", "default": "The most beautiful hamper I have ever gifted." },
+      { "type": "text", "id": "author", "label": "Author", "default": "Aanya M." },
+      { "type": "text", "id": "role", "label": "Role / location", "default": "Mumbai" }
+    ]}
+  ],
+  "presets": [{
+    "name": "Zariya Testimonials",
+    "blocks": [
+      {"type":"testimonial","settings":{"quote":"The craftsmanship is unreal — the wooden chest is now a keepsake on our mantel. Truly not just a gift.","author":"Aanya M.","role":"Wedding · Mumbai"}},
+      {"type":"testimonial","settings":{"quote":"We sent 200 corporate hampers and every client called to say thank you. Flawless from order to delivery.","author":"Rahul S.","role":"Corporate · Bengaluru"}},
+      {"type":"testimonial","settings":{"quote":"Personalised, elegant and packed with love. Zariya made our Diwali gifting effortless and memorable.","author":"Priya & Co.","role":"Festive · Delhi"}}
+    ]
+  }]
+}
+{% endschema %}

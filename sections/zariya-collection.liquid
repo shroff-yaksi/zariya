@@ -1,0 +1,75 @@
+{%- comment -%} Zariya House — Collection / Shop (native route, real products) {%- endcomment -%}
+<div class="zariya">
+  <section class="zh-banner parchment">
+    <div class="zh-banner__eyebrow">{{ section.settings.eyebrow | default: 'Curated Hampers' }}</div>
+    <h1>{{ collection.title | default: 'Shop All Hampers' }}</h1>
+    {%- if collection.description != blank -%}
+      <p>{{ collection.description | strip_html | truncate: 170 }}</p>
+    {%- else -%}
+      <p>{{ section.settings.subheading | default: 'Handcrafted gift hampers for every celebration — each piece a keepsake, made by master artisans.' }}</p>
+    {%- endif -%}
+    <div class="zh-divider" style="--w:90px"><span class="line"></span><span style="font-size:13px">❖</span><span class="line"></span></div>
+  </section>
+
+  <section class="parchment" style="padding:40px 48px 64px">
+    <div class="grid-4 wrap">
+      {%- comment -%} Real, purchasable products first {%- endcomment -%}
+      {%- for product in collection.products limit: 24 -%}
+        <article class="card">
+          {%- if product.compare_at_price > product.price -%}<span class="tag">Sale</span>{%- endif -%}
+          <a href="{{ product.url }}" style="text-decoration:none;display:block">
+            {%- if product.featured_image -%}
+              <img src="{{ product.featured_image | image_url: width: 520 }}" alt="{{ product.title | escape }}" width="540" height="380" loading="lazy">
+            {%- else -%}
+              <img src="{{ 'heritage-chest-card.jpg' | asset_url }}" alt="{{ product.title | escape }}" width="540" height="380" loading="lazy">
+            {%- endif -%}
+          </a>
+          <div class="card__body">
+            {%- if product.type != blank -%}<div style="font-family:var(--f-display);letter-spacing:2px;font-size:12px;text-transform:uppercase;color:var(--gold-muted)">{{ product.type }}</div>{%- endif -%}
+            <h3 style="margin-top:4px"><a href="{{ product.url }}" style="color:inherit;text-decoration:none">{{ product.title }}</a></h3>
+            <div class="price">{{ product.price | money }}{% if product.compare_at_price > product.price %}<span class="cut">{{ product.compare_at_price | money }}</span>{% endif %}</div>
+            <a href="{{ product.url }}" class="btn btn-green">View Hamper</a>
+          </div>
+        </article>
+      {%- endfor -%}
+
+      {%- comment -%} Coming-soon teasers (from blocks) {%- endcomment -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'coming_soon' -%}
+          <article class="card card--soon" {{ block.shopify_attributes }}>
+            <div class="card__media">
+              <img src="{{ block.settings.fallback | default: 'heritage-chest-card.jpg' | asset_url }}" alt="{{ block.settings.name | escape }}" width="540" height="380" loading="lazy">
+            </div>
+            <div class="card__body">
+              {%- if block.settings.category != blank -%}<div style="font-family:var(--f-display);letter-spacing:2px;font-size:12px;text-transform:uppercase;color:var(--gold-muted)">{{ block.settings.category }}</div>{%- endif -%}
+              <h3 style="margin-top:4px">{{ block.settings.name }}</h3>
+              <span class="zh-soon-tag">Coming Soon</span>
+            </div>
+          </article>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Zariya Collection",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Curated Hampers" },
+    { "type": "textarea", "id": "subheading", "label": "Fallback subheading", "default": "Handcrafted gift hampers for every celebration — each piece a keepsake, made by master artisans." }
+  ],
+  "blocks": [
+    { "type": "coming_soon", "name": "Coming soon product", "settings": [
+      { "type": "select", "id": "fallback", "label": "Image", "default": "heritage-chest-card.jpg",
+        "options": [
+          {"value":"heritage-chest-card.jpg","label":"Heritage Chest (card)"},
+          {"value":"heritage-chest-1.jpg","label":"Heritage Chest 1"},
+          {"value":"heritage-chest-3.jpg","label":"Heritage Chest 3"}
+        ] },
+      { "type": "text", "id": "category", "label": "Category", "default": "Festive" },
+      { "type": "text", "id": "name", "label": "Name", "default": "Coming Soon Hamper" }
+    ]}
+  ]
+}
+{% endschema %}

@@ -1,0 +1,357 @@
+{%- comment -%}
+  Zariya House — Product page.
+  Old Money-inspired editorial layout, rendered in the Zariya palette.
+  Shows the real `product` object on product templates; falls back to a
+  styled placeholder when used on a page (no product), for look & feel.
+{%- endcomment -%}
+{%- liquid
+  assign has_product = false
+  if product != blank and product.title != blank
+    assign has_product = true
+  endif
+-%}
+<div class="zariya">
+
+  {%- comment -%} ---------- TOP: GALLERY + INFO ---------- {%- endcomment -%}
+  <section class="zh-product">
+    <div class="zh-product__inner">
+
+      {%- comment -%}
+        ----- MEDIA ----- Photos come from product.images; the video is a
+        per-product metafield (custom.product_video) that references a video
+        file uploaded in Content → Files, keeping the same custom.* pattern as
+        the rest of the page. Video plays on click. Non-product pages fall back
+        to the placeholder image.
+      {%- endcomment -%}
+      {%- liquid
+        assign pvideo = product.metafields.custom.product_video.value
+        assign has_video = false
+        if pvideo != blank
+          assign has_video = true
+        endif
+      -%}
+      <div>
+        {%- if has_product and product.images.size > 0 -%}
+          <div class="zh-product__media zh-media-stage" id="zhMainStage">
+            {%- for img in product.images limit: 6 -%}
+              <div class="zh-media-item{% if forloop.first %} is-active{% endif %}" data-mid="img-{{ forloop.index }}">
+                <img src="{{ img | image_url: width: 900 }}" alt="{{ img.alt | default: product.title | escape }}" width="900" height="900" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+              </div>
+            {%- endfor -%}
+            {%- if has_video -%}
+              <div class="zh-media-item" data-mid="video">
+                <video class="zh-media-video" controls playsinline preload="none"{% if pvideo.preview_image %} poster="{{ pvideo.preview_image | image_url: width: 900 }}"{% endif %} width="900" height="900">
+                  {%- if pvideo.sources.size > 0 -%}
+                    {%- for source in pvideo.sources -%}
+                      <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                    {%- endfor -%}
+                  {%- elsif pvideo.url != blank -%}
+                    <source src="{{ pvideo.url }}">
+                  {%- endif -%}
+                </video>
+              </div>
+            {%- endif -%}
+          </div>
+          {%- if product.images.size > 1 or has_video -%}
+            <div class="zh-product__thumbs">
+              {%- for img in product.images limit: 6 -%}
+                <button type="button" class="zh-thumb{% if forloop.first %} is-active{% endif %}" data-mid="img-{{ forloop.index }}" onclick="zhShowMedia('img-{{ forloop.index }}', this)" aria-label="View photo {{ forloop.index }}">
+                  <img src="{{ img | image_url: width: 200 }}" alt="{{ img.alt | default: product.title | escape }}" width="84" height="84" loading="lazy">
+                </button>
+              {%- endfor -%}
+              {%- if has_video -%}
+                <button type="button" class="zh-thumb" data-mid="video" onclick="zhShowMedia('video', this)" aria-label="Play product video">
+                  {%- if pvideo.preview_image -%}
+                    <img src="{{ pvideo.preview_image | image_url: width: 200 }}" alt="{{ product.title | escape }} video" width="84" height="84" loading="lazy">
+                  {%- else -%}
+                    <img src="{{ product.featured_image | image_url: width: 200 }}" alt="{{ product.title | escape }} video" width="84" height="84" loading="lazy">
+                  {%- endif -%}
+                  <span class="zh-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- else -%}
+          <div class="zh-product__media">
+            {%- if section.settings.placeholder_image != blank -%}
+              <img id="zhMainImg" src="{{ section.settings.placeholder_image | image_url: width: 1000 }}" alt="{{ section.settings.title | escape }}" width="1000" height="1000" loading="eager">
+            {%- else -%}
+              <img id="zhMainImg" src="{{ section.settings.main_image | default: 'hero.png' | asset_url }}" alt="{{ section.settings.title | escape }}" width="1000" height="1000" loading="eager">
+            {%- endif -%}
+          </div>
+          <div class="zh-product__thumbs">
+            {%- assign thumb_list = section.settings.thumbs | default: 'card-wedding.png,card-festive.png,card-corporate.png' | split: ',' -%}
+            {%- for t in thumb_list -%}
+              {%- assign tf = t | strip -%}
+              <img src="{{ tf | asset_url }}" alt="{{ section.settings.title | escape }}" width="84" height="84" loading="lazy" onclick="document.getElementById('zhMainImg').src=this.src">
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ----- INFO ----- {%- endcomment -%}
+      <div class="zh-product__info">
+        <div class="zh-product__cat">{{ product.metafields.custom.category.value | default: section.settings.category }}</div>
+        <h1 class="zh-product__title">{% if has_product %}{{ product.title }}{% else %}{{ section.settings.title }}{% endif %}</h1>
+        <div class="zh-product__stars">★★★★★ <span style="font-family:var(--f-body);font-size:14px;color:var(--muted)">&nbsp;(48 reviews)</span></div>
+
+        {%- comment -%} PRICE BOX {%- endcomment -%}
+        <div class="zh-price-box">
+          <span class="zh-price-box__label">Price</span>
+          <div class="zh-price-box__val">
+            {%- if has_product -%}
+              {{ product.price | money }}
+              {%- if product.compare_at_price > product.price %}<span class="cut">{{ product.compare_at_price | money }}</span>{% endif -%}
+            {%- else -%}
+              {{ section.settings.price }}<span class="cut">{{ section.settings.compare }}</span>
+            {%- endif -%}
+          </div>
+        </div>
+
+        {%- if section.settings.sale_banner != blank -%}
+          <div class="zh-sale-banner">{{ section.settings.sale_banner }}</div>
+        {%- endif -%}
+
+        {%- liquid
+          assign order_item = section.settings.title
+          if has_product
+            assign order_item = product.title
+          endif
+          assign wa_number = section.settings.whatsapp_number | remove: ' ' | remove: '+' | remove: '-'
+          assign wa_text = 'Hi Zariya House, I would like to order the ' | append: order_item | append: '. Please share how to proceed.' | url_encode
+          assign mail_sub = 'Order enquiry: ' | append: order_item | url_encode
+          assign mail_body = 'Hi Zariya House, I would like to order the ' | append: order_item | append: '. Please share the details and how to proceed.' | url_encode
+        -%}
+        <div class="zh-product__order">
+          <p class="zh-order-note">{{ section.settings.order_note | default: "This hamper is made to order. Message us and we'll personally guide you through your purchase." }}</p>
+          <div class="zh-product__buy">
+            {%- if wa_number != blank -%}
+              <a href="https://wa.me/{{ wa_number }}?text={{ wa_text }}" target="_blank" rel="noopener" class="btn btn-green">{% render 'zariya-icons', name: 'cart' %} Order on WhatsApp</a>
+            {%- endif -%}
+            {%- if section.settings.order_email != blank -%}
+              <a href="mailto:{{ section.settings.order_email }}?subject={{ mail_sub }}&body={{ mail_body }}" class="btn btn-maroon">Enquire by Email</a>
+            {%- endif -%}
+            {%- if wa_number == blank and section.settings.order_email == blank -%}
+              <a href="{{ section.settings.order_link | default: '/pages/contact' }}" class="btn btn-green">Enquire to Order →</a>
+            {%- endif -%}
+          </div>
+          {%- if section.settings.order_phone != blank -%}
+            <p class="zh-order-phone">Or call/WhatsApp us at <a href="tel:{{ section.settings.order_phone | remove: ' ' }}">{{ section.settings.order_phone }}</a></p>
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.show_urgency -%}
+          <div class="zh-urgency"><span class="dot"></span>{{ section.settings.urgency_count }} people are viewing this right now</div>
+        {%- endif -%}
+
+        <ul class="zh-prod-features">
+          <li>{% render 'zariya-icons', name: 'truck' %} Free Pan-India delivery on this hamper</li>
+          <li>{% render 'zariya-icons', name: 'giftbox' %} Arrives in luxury gift packaging</li>
+          <li>{% render 'zariya-icons', name: 'pen' %} Add a personalised note at checkout</li>
+        </ul>
+
+        {%- comment -%} Per-product content: prefer product metafields (custom.*), fall back to template settings so Heritage Chest keeps working. {%- endcomment -%}
+        {%- assign mf_inside   = product.metafields.custom.inside_box.value -%}
+        {%- assign mf_delivery = product.metafields.custom.delivery_text.value | default: section.settings.delivery_text -%}
+        {%- assign mf_care     = product.metafields.custom.care_text.value | default: section.settings.care_text -%}
+        <div class="zh-prod-accordion">
+          <details open><summary>Description</summary><p>{% if has_product and product.description != blank %}{{ product.description }}{% else %}{{ section.settings.description }}{% endif %}</p></details>
+          {%- if mf_inside != blank -%}
+            <details><summary>What's Inside the Box</summary><div class="rte">{{ mf_inside | newline_to_br }}</div></details>
+          {%- elsif section.settings.inside_box != blank -%}
+            <details><summary>What's Inside the Box</summary><div class="rte">{{ section.settings.inside_box }}</div></details>
+          {%- endif -%}
+          {%- if mf_delivery != blank -%}
+            <details><summary>Delivery</summary><div class="rte">{{ mf_delivery | newline_to_br }}</div></details>
+          {%- endif -%}
+          {%- if mf_care != blank -%}
+            <details><summary>How to Use &amp; Care</summary><div class="rte">{{ mf_care | newline_to_br }}</div></details>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} ---------- FEATURE STRIP ---------- {%- endcomment -%}
+  <section class="zh-pdp-strip">
+    <div class="zh-pdp-strip__inner">
+      <div class="zh-pdp-strip__item">{% render 'zariya-icons', name: 'truck' %}<span>{{ section.settings.f1 }}</span></div>
+      <div class="zh-pdp-strip__sep"></div>
+      <div class="zh-pdp-strip__item">{% render 'zariya-icons', name: 'giftbox' %}<span>{{ section.settings.f2 }}</span></div>
+      <div class="zh-pdp-strip__sep"></div>
+      <div class="zh-pdp-strip__item">{% render 'zariya-icons', name: 'shield' %}<span>{{ section.settings.f3 }}</span></div>
+    </div>
+  </section>
+
+  {%- comment -%} ---------- EDITORIAL NOTES ---------- Per-product: prefer metafields, else template settings. Image falls back to the product's OWN featured photo so a new product never shows another product's image. {%- endcomment -%}
+  {%- assign nb_heading = product.metafields.custom.notes_heading.value | default: section.settings.notes_heading -%}
+  {%- assign nb_sub     = product.metafields.custom.notes_sub.value | default: section.settings.notes_sub -%}
+  {%- assign nb_body    = product.metafields.custom.notes_body.value | default: section.settings.notes_body -%}
+  {%- if nb_body != blank or nb_heading != blank -%}
+  <section class="parchment gold-rule zh-notes">
+    <div class="zh-notes__inner wrap">
+      <div class="zh-notes__media">
+        {%- if product.metafields.custom.notes_image.value != blank -%}
+          <img src="{{ product.metafields.custom.notes_image.value | image_url: width: 800 }}" alt="{{ nb_heading | escape }}" width="800" height="900" loading="lazy">
+        {%- elsif section.settings.notes_image != blank -%}
+          <img src="{{ section.settings.notes_image | image_url: width: 800 }}" alt="{{ nb_heading | escape }}" width="800" height="900" loading="lazy">
+        {%- elsif has_product and product.featured_image -%}
+          <img src="{{ product.featured_image | image_url: width: 800 }}" alt="{{ nb_heading | escape }}" width="800" height="900" loading="lazy">
+        {%- else -%}
+          <img src="{{ section.settings.notes_image_asset | default: 'hero.png' | asset_url }}" alt="{{ nb_heading | escape }}" width="800" height="900" loading="lazy">
+        {%- endif -%}
+      </div>
+      <div class="zh-notes__body">
+        <h2>{{ nb_heading }}</h2>
+        {%- if nb_sub != blank -%}<p class="zh-notes__lead">{{ nb_sub }}</p>{%- endif -%}
+        <div class="rte">{{ nb_body }}</div>
+      </div>
+    </div>
+  </section>
+  {%- endif -%}
+
+  {%- comment -%} ---------- REVIEWS ---------- {%- endcomment -%}
+  {%- if section.blocks.size > 0 -%}
+  <section class="parchment zh-reviews">
+    <div class="zh-divider" style="margin-bottom:32px"><span class="line"></span><span style="font-size:13px">❖</span>
+      <h2 style="font-family:var(--f-display);font-weight:600;font-size:32px;color:var(--maroon)">Reviews</h2>
+      <span style="font-size:13px">❖</span><span class="line"></span></div>
+    <div class="zh-reviews__grid wrap">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'review' -%}
+          <div class="testi" {{ block.shopify_attributes }}>
+            <div class="testi__stars">★★★★★</div>
+            <p class="testi__quote">“{{ block.settings.quote }}”</p>
+            <div class="testi__author">{{ block.settings.author }}</div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </section>
+  {%- endif -%}
+
+  {%- comment -%} ---------- RELATED PRODUCTS ---------- {%- endcomment -%}
+  {%- liquid
+    assign related = null
+    if has_product and product.collections.size > 0
+      assign related = product.collections.first.products
+    endif
+    if related == blank or related.size < 2
+      assign related = collections.all.products
+    endif
+  -%}
+  {%- if related and related.size > 1 -%}
+  <section class="parchment gold-rule zh-related">
+    <div class="zh-divider" style="margin-bottom:34px"><span class="line"></span><span style="font-size:13px">❖</span>
+      <h2 style="font-family:var(--f-display);font-weight:600;font-size:32px;color:var(--maroon)">You May Also Like</h2>
+      <span style="font-size:13px">❖</span><span class="line"></span></div>
+    <div class="grid-4 wrap">
+      {%- assign shown = 0 -%}
+      {%- for p in related -%}
+        {%- if p.id != product.id and shown < 4 -%}
+          <article class="card">
+            <a href="{{ p.url }}" style="text-decoration:none;display:block"><img src="{{ p.featured_image | image_url: width: 520 }}" alt="{{ p.title | escape }}" width="540" height="380" loading="lazy"></a>
+            <div class="card__body">
+              <h3 style="margin-top:4px"><a href="{{ p.url }}" style="color:inherit;text-decoration:none">{{ p.title }}</a></h3>
+              <div class="price">{{ p.price | money }}</div>
+              <a href="{{ p.url }}" class="btn btn-green">View Hamper</a>
+            </div>
+          </article>
+          {%- assign shown = shown | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </section>
+  {%- endif -%}
+
+</div>
+
+{%- comment -%} Gallery media (image + video) styling & swap {%- endcomment -%}
+<style>
+  .zariya .zh-media-stage{position:relative;aspect-ratio:1/1;background:var(--parchment,#f6efe2);}
+  .zariya .zh-media-item{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .25s ease;}
+  .zariya .zh-media-item.is-active{opacity:1;visibility:visible;}
+  .zariya .zh-media-item img,
+  .zariya .zh-media-item video,
+  .zariya .zh-media-external iframe{width:100%;height:100%;object-fit:cover;display:block;border:0;}
+  .zariya .zh-media-external{width:100%;height:100%;}
+  .zariya .zh-thumb{position:relative;padding:0;border:1px solid var(--gold-border);border-radius:8px;overflow:hidden;cursor:pointer;background:none;line-height:0;}
+  .zariya .zh-thumb.is-active{outline:2px solid var(--maroon,#7a1f2b);outline-offset:1px;}
+  .zariya .zh-thumb img{width:84px;height:84px;object-fit:cover;display:block;}
+  .zariya .zh-thumb__play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;text-shadow:0 1px 4px rgba(0,0,0,.6);background:rgba(0,0,0,.28);pointer-events:none;}
+  @media (max-width:640px){ .zariya .zh-thumb img{width:62px;height:62px;} }
+</style>
+<script>
+  function zhShowMedia(id, thumb){
+    var stage = document.getElementById('zhMainStage');
+    if(!stage) return;
+    var items = stage.querySelectorAll('.zh-media-item');
+    for(var i=0;i<items.length;i++){
+      var on = items[i].getAttribute('data-mid') === String(id);
+      items[i].classList.toggle('is-active', on);
+      if(!on){ var v = items[i].querySelector('video'); if(v){ v.pause(); } }
+    }
+    var thumbs = thumb.parentNode.querySelectorAll('.zh-thumb');
+    for(var j=0;j<thumbs.length;j++){ thumbs[j].classList.remove('is-active'); }
+    thumb.classList.add('is-active');
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Zariya Product",
+  "settings": [
+    { "type": "paragraph", "content": "On a product template this shows the real product. The placeholder fields are only used when the section is placed on a page." },
+    { "type": "image_picker", "id": "placeholder_image", "label": "Placeholder image (defaults to hero.png)" },
+    { "type": "text", "id": "main_image", "label": "Main gallery image (asset filename, e.g. 1.png)", "default": "hero.png" },
+    { "type": "text", "id": "thumbs", "label": "Gallery thumbnails (comma-separated asset filenames)", "default": "card-wedding.png,card-festive.png,card-corporate.png" },
+    { "type": "text", "id": "category", "label": "Category eyebrow", "default": "Signature Hampers" },
+    { "type": "text", "id": "sale_banner", "label": "Sale banner (leave blank to hide)", "default": "All hampers on sale for a limited time." },
+    { "type": "checkbox", "id": "show_urgency", "label": "Show 'people viewing' line", "default": true },
+    { "type": "number", "id": "urgency_count", "label": "Viewing count", "default": 87 },
+    { "type": "header", "content": "Order via contact (no checkout)" },
+    { "type": "text", "id": "whatsapp_number", "label": "WhatsApp number (with country code, digits only e.g. 919876543210)" },
+    { "type": "text", "id": "order_email", "label": "Order email address" },
+    { "type": "text", "id": "order_phone", "label": "Phone shown to call (e.g. +91 98765 43210)" },
+    { "type": "textarea", "id": "order_note", "label": "Order note", "default": "This hamper is made to order. Message us and we'll personally guide you through your purchase." },
+    { "type": "url", "id": "order_link", "label": "Fallback enquiry link (if no WhatsApp/email set)" },
+    { "type": "header", "content": "Accordion content" },
+    { "type": "richtext", "id": "inside_box", "label": "What's Inside the Box", "default": "<ul><li>A hand-carved wooden chest</li><li>Curated artisanal treats</li><li>A silk-lined keepsake tray</li><li>A wax-sealed personalised note</li></ul>" },
+    { "type": "textarea", "id": "delivery_text", "label": "Delivery", "default": "Dispatched within 3–5 working days. Free shipping across India. Personalised hampers are made to order and may take 7–10 days." },
+    { "type": "textarea", "id": "care_text", "label": "How to use & care", "default": "Wipe the wooden chest with a dry cloth. Keep away from direct moisture to preserve the carving and finish — each chest is a keepsake meant to last for years." },
+    { "type": "header", "content": "Feature strip" },
+    { "type": "text", "id": "f1", "label": "Feature 1", "default": "Free Pan-India Delivery" },
+    { "type": "text", "id": "f2", "label": "Feature 2", "default": "Luxury Gift Packaging" },
+    { "type": "text", "id": "f3", "label": "Feature 3", "default": "Secure Payments" },
+    { "type": "header", "content": "Crafted With Confidence" },
+    { "type": "text", "id": "conf_heading", "label": "Heading", "default": "Crafted With Confidence" },
+    { "type": "text", "id": "conf_sub", "label": "Subheading", "default": "The assurance behind every hamper we send." },
+    { "type": "text", "id": "conf1_title", "label": "Card 1 title", "default": "Artisanal Craftsmanship" },
+    { "type": "textarea", "id": "conf1_text", "label": "Card 1 text", "default": "Hand-carved chests and hand-loomed details, made by master artisans." },
+    { "type": "text", "id": "conf2_title", "label": "Card 2 title", "default": "Premium Materials" },
+    { "type": "textarea", "id": "conf2_text", "label": "Card 2 text", "default": "Ethically sourced wood, the finest silks and gourmet treats." },
+    { "type": "text", "id": "conf3_title", "label": "Card 3 title", "default": "Personalised With Love" },
+    { "type": "textarea", "id": "conf3_text", "label": "Card 3 text", "default": "Curated around your story, your people and your occasion." },
+    { "type": "header", "content": "Editorial notes block" },
+    { "type": "image_picker", "id": "notes_image", "label": "Image (defaults to hero.png)" },
+    { "type": "text", "id": "notes_image_asset", "label": "Image asset filename (used if no image picked)", "default": "hero.png" },
+    { "type": "text", "id": "notes_heading", "label": "Heading", "default": "The Story Inside This Hamper" },
+    { "type": "text", "id": "notes_sub", "label": "Subheading", "default": "Every element, chosen with intent." },
+    { "type": "richtext", "id": "notes_body", "label": "Body", "default": "<p><strong>The Craft:</strong> Each chest is hand-carved and finished by artisans whose skill has been passed down through generations.</p><p><strong>The Contents:</strong> A considered selection of treats and keepsakes, arranged on a silk-lined tray.</p><p><strong>Best For:</strong> Weddings, festive celebrations, milestones, and gestures that deserve to be remembered.</p><p><strong>The Feeling:</strong> Not just a gift — a medium through which respect and love are expressed.</p>" }
+  ],
+  "blocks": [
+    { "type": "review", "name": "Review", "settings": [
+      { "type": "textarea", "id": "quote", "label": "Quote", "default": "The craftsmanship is unreal — the wooden chest is now a keepsake on our mantel." },
+      { "type": "text", "id": "author", "label": "Author", "default": "Aanya M." }
+    ]}
+  ],
+  "presets": [{
+    "name": "Zariya Product",
+    "blocks": [
+      {"type":"review","settings":{"quote":"The craftsmanship is unreal — the wooden chest is now a keepsake on our mantel. Truly not just a gift.","author":"Aanya M."}},
+      {"type":"review","settings":{"quote":"We sent 200 corporate hampers and every client called to say thank you. Flawless from order to delivery.","author":"Rahul S."}},
+      {"type":"review","settings":{"quote":"Personalised, elegant and packed with love. Zariya made our Diwali gifting effortless and memorable.","author":"Priya & Co."}}
+    ]
+  }]
+}
+{% endschema %}

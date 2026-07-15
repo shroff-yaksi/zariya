@@ -1,0 +1,26 @@
+{
+  "sections": {
+    "shop": {
+      "type": "zariya-shop",
+      "blocks": {
+        "p1": { "type": "product", "settings": { "fallback": "heritage-chest-card.jpg", "category": "Signature Hamper", "name": "The Heritage Chest", "price": "₹ 6,499", "tag": "Available Now", "link": "/products/the-heritage-chest" } },
+        "p2": { "type": "product", "settings": { "fallback": "heritage-chest-card.jpg", "category": "Festive", "name": "The Festive Edit", "coming_soon": true } },
+        "p3": { "type": "product", "settings": { "fallback": "heritage-chest-card.jpg", "category": "Wedding", "name": "The Wedding Trousseau", "coming_soon": true } },
+        "p4": { "type": "product", "settings": { "fallback": "heritage-chest-card.jpg", "category": "Corporate", "name": "The Corporate Signature", "coming_soon": true } },
+        "p5": { "type": "product", "settings": { "fallback": "heritage-chest-card.jpg", "category": "Kids", "name": "Little Wonders", "coming_soon": true } },
+        "p6": { "type": "product", "settings": { "fallback": "heritage-chest-card.jpg", "category": "Wedding", "name": "The Anniversary Keepsake", "coming_soon": true } },
+        "p7": { "type": "product", "settings": { "fallback": "heritage-chest-card.jpg", "category": "Festive", "name": "Festive Glow Hamper", "coming_soon": true } },
+        "p8": { "type": "product", "settings": { "fallback": "heritage-chest-card.jpg", "category": "Festive", "name": "Diwali Radiance Hamper", "coming_soon": true } }
+      },
+      "block_order": ["p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8"],
+      "settings": {
+        "eyebrow": "Curated Hampers",
+        "heading": "Shop All Hampers",
+        "subheading": "Our handcrafted gift boxes and hampers. The Heritage Chest is available now — more arriving soon.",
+        "show_filters": false,
+        "more_label": ""
+      }
+    }
+  },
+  "order": ["shop"]
+}

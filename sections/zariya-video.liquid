@@ -1,0 +1,36 @@
+{%- comment -%} Zariya House — Video {%- endcomment -%}
+<div class="zariya">
+  <section class="zh-video parchment gold-rule">
+    <div class="zh-divider" style="margin-bottom:6px"><span class="line"></span><span style="font-size:13px">❖</span>
+      <h2 style="font-family:var(--f-display);font-weight:600;font-size:36px;color:var(--maroon)">{{ section.settings.heading }}</h2>
+      <span style="font-size:13px">❖</span><span class="line"></span></div>
+    {%- if section.settings.subheading != blank -%}<p class="zh-video__sub">{{ section.settings.subheading }}</p>{%- endif -%}
+    <div class="zh-video__frame">
+      {%- if section.settings.video != blank -%}
+        {{ section.settings.video | video_tag: image_size: '1100x', controls: true, loop: false }}
+      {%- elsif section.settings.video_url != blank -%}
+        {%- assign v = section.settings.video_url -%}
+        {%- if v.type == 'youtube' -%}
+          <iframe src="https://www.youtube.com/embed/{{ v.id }}" title="{{ section.settings.heading | escape }}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        {%- elsif v.type == 'vimeo' -%}
+          <iframe src="https://player.vimeo.com/video/{{ v.id }}" title="{{ section.settings.heading | escape }}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        {%- endif -%}
+      {%- else -%}
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--gold-soft);font-family:var(--f-display);font-size:22px">Add a video in the theme editor</div>
+      {%- endif -%}
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Zariya Video",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The Art of Handcrafted Gifting" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Step inside our atelier and watch a Zariya hamper come to life — from hand-carved chest to the final wax-sealed note." },
+    { "type": "video", "id": "video", "label": "Uploaded video (Shopify-hosted)" },
+    { "type": "video_url", "id": "video_url", "label": "Or a YouTube / Vimeo link", "accept": ["youtube", "vimeo"], "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc" }
+  ],
+  "presets": [{ "name": "Zariya Video" }]
+}
+{% endschema %}

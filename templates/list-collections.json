@@ -1,0 +1,24 @@
+{
+  "sections": {
+    "collections": {
+      "type": "zariya-collections",
+      "blocks": {
+        "c1": { "type": "collection", "settings": { "fallback": "heritage-chest-1.jpg", "title": "The Heritage Chest", "description": "A hand-carved keepsake chest of artisanal treasures — available now.", "link": "/products/the-heritage-chest" } },
+        "c2": { "type": "collection", "settings": { "fallback": "heritage-chest-3.jpg", "title": "The Festive Edit", "description": "A curated edit of festive hampers, thoughtfully handcrafted.", "coming_soon": true } },
+        "c3": { "type": "collection", "settings": { "fallback": "heritage-chest-1.jpg", "title": "The Wedding Trousseau", "description": "Trousseau chests and ceremonial gifts that honour every guest as family.", "coming_soon": true } },
+        "c4": { "type": "collection", "settings": { "fallback": "heritage-chest-1.jpg", "title": "The Corporate Signature", "description": "Sophisticated, brandable curated boxes that build lasting partnerships.", "coming_soon": true } },
+        "c5": { "type": "collection", "settings": { "fallback": "heritage-chest-3.jpg", "title": "Little Wonders", "description": "Whimsical, playful curated boxes crafted with love for the little ones.", "coming_soon": true } },
+        "c6": { "type": "collection", "settings": { "fallback": "heritage-chest-1.jpg", "title": "The Anniversary Keepsake", "description": "Bespoke keepsake boxes curated around your milestone moments.", "coming_soon": true } },
+        "c7": { "type": "collection", "settings": { "fallback": "heritage-chest-3.jpg", "title": "Festive Glow Hamper", "description": "A radiant hamper of festive delights and artisanal treats.", "coming_soon": true } },
+        "c8": { "type": "collection", "settings": { "fallback": "heritage-chest-1.jpg", "title": "Diwali Radiance Hamper", "description": "A luminous Diwali hamper of diyas, sweets and keepsakes.", "coming_soon": true } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"],
+      "settings": {
+        "eyebrow": "Curated Hampers",
+        "heading": "Shop All Hampers",
+        "subheading": "Our handcrafted gift boxes and hampers. The Heritage Chest is available now — more arriving soon."
+      }
+    }
+  },
+  "order": ["collections"]
+}

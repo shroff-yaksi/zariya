@@ -1,0 +1,52 @@
+{%- comment -%} Zariya House — Header (logo band) + sticky nav with consistent links {%- endcomment -%}
+{%- liquid
+  assign p = request.path
+-%}
+<div class="zariya">
+  <header class="zh-header">
+    <a href="{{ routes.root_url }}">
+      {%- if section.settings.logo != blank -%}
+        <img src="{{ section.settings.logo | image_url: width: 528 }}" alt="{{ shop.name }}" width="264" height="176">
+      {%- else -%}
+        <img src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name }} — From Hands to Hearts" width="264" height="176">
+      {%- endif -%}
+    </a>
+  </header>
+
+  <nav class="zh-nav">
+    <ul class="zh-nav__menu">
+      {%- if section.settings.menu != blank and section.settings.menu.links.size > 0 -%}
+        {%- for link in section.settings.menu.links -%}
+          <li><a href="{{ link.url }}"{% if link.active or link.child_active %} class="active"{% endif %}>{{ link.title }}{% if link.links.size > 0 %} <span style="font-size:11px">▾</span>{% endif %}</a></li>
+          {%- unless forloop.last -%}<span class="zh-nav__sep"></span>{%- endunless -%}
+        {%- endfor -%}
+      {%- else -%}
+        <li><a href="{{ routes.root_url }}"{% if p == routes.root_url %} class="active"{% endif %}>Home</a></li><span class="zh-nav__sep"></span>
+        <li><a href="{{ routes.all_products_collection_url }}"{% if p contains '/collections' or p contains '/pages/shop' %} class="active"{% endif %}>Shop</a></li><span class="zh-nav__sep"></span>
+        <li><a href="/pages/corporate-gifting"{% if p contains 'corporate-gifting' %} class="active"{% endif %}>Corporate Gifting</a></li><span class="zh-nav__sep"></span>
+        <li><a href="/pages/our-story"{% if p contains 'our-story' %} class="active"{% endif %}>Our Story</a></li><span class="zh-nav__sep"></span>
+        <li><a href="/pages/faqs"{% if p contains 'faqs' %} class="active"{% endif %}>FAQs</a></li><span class="zh-nav__sep"></span>
+        <li><a href="/pages/contact"{% if p contains 'contact' %} class="active"{% endif %}>Contact</a></li>
+      {%- endif -%}
+    </ul>
+    <div class="zh-nav__icons">
+      <a href="{{ routes.search_url }}" aria-label="Search">{% render 'zariya-icons', name: 'search' %}</a>
+      <a href="{{ routes.account_url }}" aria-label="Account">{% render 'zariya-icons', name: 'user' %}</a>
+      <a href="{{ routes.cart_url }}" aria-label="Cart">
+        {% render 'zariya-icons', name: 'cart' %}
+        {%- if cart.item_count > 0 -%}<span class="zh-cart-count">{{ cart.item_count }}</span>{%- endif -%}
+      </a>
+    </div>
+  </nav>
+</div>
+
+{% schema %}
+{
+  "name": "Zariya Header",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo (defaults to uploaded logo.png)" },
+    { "type": "paragraph", "content": "Leave the menu empty to use the built-in Zariya nav (Home, Shop, Collections, Corporate Gifting, Our Story, FAQs)." },
+    { "type": "link_list", "id": "menu", "label": "Navigation menu (optional override)" }
+  ]
+}
+{% endschema %}

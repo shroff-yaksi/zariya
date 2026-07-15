@@ -1,0 +1,77 @@
+{%- comment -%} Zariya House — Home (hero · collections · signature · quote) {%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign hero_img = s.hero_image | default: nil
+  assign sig_img = s.sig_image | default: nil
+-%}
+<div class="zariya">
+
+  <!-- HERO -->
+  <section class="zh-hero">
+    {%- if hero_img -%}
+      <img src="{{ hero_img | image_url: width: 1800 }}" alt="{{ s.hero_h1 | escape }}" width="1825" height="862" loading="eager">
+    {%- else -%}
+      <img src="{{ 'hero.png' | asset_url }}" alt="Luxury handcrafted Zariya House gift hamper" width="1825" height="862" loading="eager">
+    {%- endif -%}
+    <div class="zh-hero__veil"></div>
+    <div class="zh-hero__content">
+      <h1>{{ s.hero_h1 }}<br><em>{{ s.hero_h2 }}</em></h1>
+      <div class="zh-divider" style="margin:24px 0 22px;justify-content:flex-start"><span class="line" style="--w:120px"></span><span style="font-size:14px">❖</span></div>
+      <p>{{ s.hero_text }}</p>
+      <div style="display:flex;gap:18px;margin-top:34px;flex-wrap:wrap">
+        {%- if s.btn1_label != blank -%}<a href="{{ s.btn1_link | default: '#' }}" class="btn btn-maroon">{% render 'zariya-icons', name: 'giftbox' %} {{ s.btn1_label }}</a>{%- endif -%}
+        {%- if s.btn2_label != blank -%}<a href="{{ s.btn2_link | default: '#' }}" class="btn btn-green">{% render 'zariya-icons', name: 'cart' %} {{ s.btn2_label }}</a>{%- endif -%}
+      </div>
+      
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Zariya Home",
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image (defaults to hero.png)" },
+    { "type": "text", "id": "hero_h1", "label": "Heading line 1", "default": "Rooted in Tradition," },
+    { "type": "text", "id": "hero_h2", "label": "Heading line 2 (gold italic)", "default": "Crafted for Celebrations" },
+    { "type": "textarea", "id": "hero_text", "label": "Hero subtext", "default": "Heirloom hampers handcrafted for life's most meaningful moments." },
+    { "type": "text", "id": "btn1_label", "label": "Button 1 label", "default": "Customize Your Gift" },
+    { "type": "url", "id": "btn1_link", "label": "Button 1 link" },
+    { "type": "text", "id": "btn2_label", "label": "Button 2 label", "default": "Shop Hampers" },
+    { "type": "url", "id": "btn2_link", "label": "Button 2 link" },
+    { "type": "header", "content": "Collections" },
+    { "type": "text", "id": "coll_heading", "label": "Heading", "default": "Explore Our Collections" },
+    { "type": "header", "content": "Our Signature" },
+    { "type": "image_picker", "id": "sig_image", "label": "Signature image" },
+    { "type": "text", "id": "sig_eyebrow", "label": "Eyebrow", "default": "OUR SIGNATURE" },
+    { "type": "text", "id": "sig_h", "label": "Heading", "default": "Handcrafted for Meaningful" },
+    { "type": "text", "id": "sig_accent", "label": "Heading accent (gold)", "default": "Moments" },
+    { "type": "text", "id": "sig_text", "label": "Text", "default": "Crafted by hands, cherished by hearts." },
+    { "type": "text", "id": "sig_btn_label", "label": "Button label", "default": "Discover Our Story" },
+    { "type": "url", "id": "sig_btn_link", "label": "Button link" }
+  ],
+  "blocks": [
+    { "type": "collection_card", "name": "Collection card", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Image" },
+      { "type": "select", "id": "fallback", "label": "Fallback image", "default": "card-wedding.png",
+        "options": [
+          {"value":"card-wedding.png","label":"Wedding"},{"value":"card-festive.png","label":"Festive"},
+          {"value":"card-kids.png","label":"Kids"},{"value":"card-corporate.png","label":"Corporate"}
+        ] },
+      { "type": "text", "id": "title", "label": "Title", "default": "Wedding Hampers" },
+      { "type": "textarea", "id": "description", "label": "Description", "default": "Artisanal craftsmanship, perfect for your big day" },
+      { "type": "url", "id": "link", "label": "Link" }
+    ]}
+  ],
+  "presets": [{
+    "name": "Zariya Home",
+    "blocks": [
+      {"type":"collection_card","settings":{"fallback":"card-wedding.png","title":"Wedding Hampers","description":"Artisanal craftsmanship, perfect for your big day"}},
+      {"type":"collection_card","settings":{"fallback":"card-festive.png","title":"Festive Hampers","description":"Elegant delights for joyous celebrations"}},
+      {"type":"collection_card","settings":{"fallback":"card-kids.png","title":"Kids Hampers","description":"Whimsical gifts crafted with love"}},
+      {"type":"collection_card","settings":{"fallback":"card-corporate.png","title":"Corporate Gifting","description":"Sophisticated hampers for lasting impressions"}}
+    ]
+  }]
+}
+{% endschema %}

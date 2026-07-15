@@ -1,0 +1,6 @@
+{
+  "sections": {
+    "story": { "type": "zariya-story", "settings": {} }
+  },
+  "order": ["story"]
+}

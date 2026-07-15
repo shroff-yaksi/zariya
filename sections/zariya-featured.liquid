@@ -1,0 +1,98 @@
+{%- comment -%} Zariya House — Featured Hampers (product cards) {%- endcomment -%}
+<div class="zariya">
+  <section class="parchment gold-rule" style="padding:52px 48px 60px">
+    <div class="zh-divider" style="margin-bottom:40px">
+      <span class="line"></span><span style="font-size:13px">❖</span>
+      <h2 style="font-family:var(--f-display);font-weight:600;font-size:38px;color:var(--maroon);letter-spacing:.5px">{{ section.settings.heading }}</h2>
+      <span style="font-size:13px">❖</span><span class="line"></span>
+    </div>
+    <div class="grid-4 wrap">
+      {%- for block in section.blocks -%}
+        {%- assign soon = block.settings.coming_soon -%}
+        {%- comment -%} If a real product is linked, its data wins; otherwise use the manual/teaser fields. {%- endcomment -%}
+        {%- assign p = block.settings.product_ref -%}
+        {%- if p != blank -%}
+          {%- assign card_name = p.title -%}
+          {%- assign card_cat = p.metafields.custom.category.value | default: block.settings.category -%}
+          {%- assign card_price = p.price | money -%}
+          {%- assign card_link = p.url -%}
+        {%- else -%}
+          {%- assign card_name = block.settings.name -%}
+          {%- assign card_cat = block.settings.category -%}
+          {%- assign card_price = block.settings.price -%}
+          {%- assign card_link = block.settings.link -%}
+        {%- endif -%}
+        {%- assign card_link = card_link | default: '/collections/all' -%}
+        {%- capture card_img -%}
+          {%- if block.settings.image != blank -%}
+            <img src="{{ block.settings.image | image_url: width: 520 }}" alt="{{ card_name | escape }}" width="540" height="380" loading="lazy">
+          {%- elsif p != blank and p.featured_image -%}
+            <img src="{{ p.featured_image | image_url: width: 520 }}" alt="{{ card_name | escape }}" width="540" height="380" loading="lazy">
+          {%- else -%}
+            <img src="{{ block.settings.fallback | default: 'card-wedding.png' | asset_url }}" alt="{{ card_name | escape }}" width="540" height="380" loading="lazy">
+          {%- endif -%}
+        {%- endcapture -%}
+        <article class="card{% if soon %} card--soon{% endif %}" {{ block.shopify_attributes }}>
+          {%- if soon -%}
+            <span class="tag tag--soon">Coming Soon</span>
+            <div class="card__media">{{ card_img }}</div>
+          {%- else -%}
+            {%- if block.settings.tag != blank -%}<span class="tag">{{ block.settings.tag }}</span>{%- endif -%}
+            <a href="{{ card_link }}" style="text-decoration:none;display:block">{{ card_img }}</a>
+          {%- endif -%}
+          <div class="card__body">
+            <div style="font-family:var(--f-display);letter-spacing:2px;font-size:12px;text-transform:uppercase;color:var(--gold-muted)">{{ card_cat }}</div>
+            {%- if soon -%}
+              <h3 style="margin-top:4px">{{ card_name }}</h3>
+            {%- else -%}
+              <h3 style="margin-top:4px"><a href="{{ card_link }}" style="color:var(--maroon);text-decoration:none">{{ card_name }}</a></h3>
+              <div class="price">{{ card_price }}</div>
+              <a href="{{ card_link }}" class="btn btn-green">View Hamper</a>
+            {%- endif -%}
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+    {%- if section.settings.button_label != blank -%}
+      <div style="text-align:center;margin-top:44px"><a href="{{ section.settings.button_link | default: '/collections/all' }}" class="btn btn-maroon">{{ section.settings.button_label }}</a></div>
+    {%- endif -%}
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Zariya Featured",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Featured Hampers" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "View All Hampers" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ],
+  "blocks": [
+    { "type": "product", "name": "Product card", "settings": [
+      { "type": "product", "id": "product_ref", "label": "Link to a real product", "info": "Auto-fills image, name, price and link. Leave blank for a manual/teaser card." },
+      { "type": "image_picker", "id": "image", "label": "Image (overrides product photo)" },
+      { "type": "select", "id": "fallback", "label": "Fallback image", "default": "card-wedding.png",
+        "options": [
+          {"value":"heritage-chest-card.jpg","label":"Heritage Chest"},
+          {"value":"card-wedding.png","label":"Wedding"},{"value":"card-festive.png","label":"Festive"},
+          {"value":"card-kids.png","label":"Kids"},{"value":"card-corporate.png","label":"Corporate"}
+        ] },
+      { "type": "text", "id": "category", "label": "Category", "default": "Wedding" },
+      { "type": "text", "id": "name", "label": "Name", "default": "The Heritage Wedding Chest" },
+      { "type": "text", "id": "price", "label": "Price", "default": "₹ 6,499" },
+      { "type": "text", "id": "tag", "label": "Tag badge (optional)" },
+      { "type": "checkbox", "id": "coming_soon", "label": "Coming soon (dim card, hide price & link)", "default": false },
+      { "type": "url", "id": "link", "label": "Link" }
+    ]}
+  ],
+  "presets": [{
+    "name": "Zariya Featured",
+    "blocks": [
+      {"type":"product","settings":{"fallback":"card-wedding.png","category":"Wedding","name":"The Heritage Wedding Chest","price":"₹ 6,499","tag":"Bestseller"}},
+      {"type":"product","settings":{"fallback":"card-festive.png","category":"Festive","name":"Festive Glow Hamper","price":"₹ 2,999"}},
+      {"type":"product","settings":{"fallback":"card-kids.png","category":"Kids","name":"Little Wonders Box","price":"₹ 1,899"}},
+      {"type":"product","settings":{"fallback":"card-corporate.png","category":"Corporate","name":"Corporate Signature Trunk","price":"₹ 5,499","tag":"New"}}
+    ]
+  }]
+}
+{% endschema %}

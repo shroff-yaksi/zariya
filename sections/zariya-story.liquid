@@ -1,0 +1,59 @@
+{%- comment -%} Zariya House — Our Story page {%- endcomment -%}
+<div class="zariya">
+  <section class="zh-banner parchment">
+    <div class="zh-banner__eyebrow">{{ section.settings.eyebrow | default: 'Our Heritage' }}</div>
+    <h1>{{ section.settings.heading | default: 'Our Story' }}</h1>
+    <p>{{ section.settings.subheading | default: 'Zariya House is a bridge between the timeless skill of Indian artisans and your most cherished celebrations.' }}</p>
+    <div class="zh-divider" style="--w:90px"><span class="line"></span><span style="font-size:13px">❖</span><span class="line"></span></div>
+  </section>
+
+  <section class="parchment" style="padding:0 48px">
+    <div class="wrap">
+      <div class="story-row">
+        <div class="story-row__media"><img src="{{ '2.png' | asset_url }}" alt="Zariya House Heritage Chest, open with artisanal treasures" width="900" height="900" loading="lazy"></div>
+        <div>
+          <div class="story-eyebrow">The Philosophy</div>
+          <h2>It was not merely founded; it was gathered.</h2>
+          <p>Gathered from years of admiring the intricate weave of a hand-loomed fabric, the weight of a hand-carved wooden chest, and the profound joy that comes from a gift given with true intent.</p>
+          <p>To us, a gift is a <span class="lead">“Zariya”</span> — a medium through which we express our deepest respect and love.</p>
+        </div>
+      </div>
+      <div class="story-row rev">
+        <div class="story-row__media"><img src="{{ '3.png' | asset_url }}" alt="Hand-carved Heritage Chest, artisan craftsmanship" width="900" height="900" loading="lazy"></div>
+        <div>
+          <div class="story-eyebrow">The Professional Journey</div>
+          <h2>Where precision meets poetry.</h2>
+          <p>The creation of Zariya House is the culmination of a lifelong professional journey — a degree in Business Management, years in Fashion Design that honed an eye for the minute details of true luxury, and a background in Event Management that taught the art of seamless execution.</p>
+          <p>It was through this lens that we realised true luxury isn't found in mass production, but in the <span class="lead">“imperfect” perfection</span> of the human hand.</p>
+        </div>
+      </div>
+      <div class="story-row">
+        <div class="story-row__media"><img src="{{ '2.png' | asset_url }}" alt="A family-led endeavour — the Heritage Chest" width="900" height="900" loading="lazy"></div>
+        <div>
+          <div class="story-eyebrow">The Family Front</div>
+          <h2>A united front of women who believe in legacy.</h2>
+          <p>Zariya House is a family-led endeavour. Our inspiration is drawn from the heritage passed down through generations and the future we see in the next.</p>
+          <p>This brand is a commitment to preserving the old ways of Indian craftsmanship while refining them for the modern world.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="quote-band parchment">
+    <div class="zh-divider" style="--w:120px"><span class="line"></span><span style="font-size:13px">❖</span>
+      <p>“Not just gifts,<br class="zh-qbr">but stories that stay.”</p>
+      <span style="font-size:13px">❖</span><span class="line"></span></div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Zariya Our Story",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Our Heritage" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Our Story" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Zariya House is a bridge between the timeless skill of Indian artisans and your most cherished celebrations." }
+  ],
+  "presets": [{ "name": "Zariya Our Story" }]
+}
+{% endschema %}

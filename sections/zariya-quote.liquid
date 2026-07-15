@@ -1,0 +1,17 @@
+{%- comment -%} Zariya House — Quote band {%- endcomment -%}
+<div class="zariya">
+  <section class="quote-band parchment">
+    <div class="zh-divider" style="--w:120px"><span class="line"></span><span style="font-size:13px">❖</span>
+      <p>“{{ section.settings.quote | escape | replace: ', ', ',<br class="zh-qbr">' }}”</p>
+      <span style="font-size:13px">❖</span><span class="line"></span></div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "Zariya Quote",
+  "settings": [
+    { "type": "text", "id": "quote", "label": "Quote", "default": "Not just gifts, but stories that stay." }
+  ],
+  "presets": [{ "name": "Zariya Quote" }]
+}
+{% endschema %}

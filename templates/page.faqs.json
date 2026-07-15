@@ -1,0 +1,23 @@
+{
+  "sections": {
+    "faqs": {
+      "type": "zariya-faqs",
+      "blocks": {
+        "q1": { "type": "qa", "settings": { "question": "What is Zariya House?", "answer": "Zariya House is a luxury gifting brand rooted in Indian craftsmanship. We curate heirloom hampers and keepsakes that celebrate traditions, meaningful moments, and the artistry of skilled Indian artisans." } },
+        "q2": { "type": "qa", "settings": { "question": "Are all Zariya House products handcrafted?", "answer": "Yes. Every hamper is thoughtfully curated using handcrafted products sourced from talented artisans across India. As many pieces are handmade, slight variations in colour, texture or finish are natural and make each creation uniquely beautiful." } },
+        "q3": { "type": "qa", "settings": { "question": "Do you offer customised hampers?", "answer": "Absolutely. We specialise in personalised gifting experiences for weddings, festive celebrations, birthdays, baby showers, anniversaries and corporate occasions. Simply share your requirements, budget and occasion, and we will curate a hamper exclusively for you." } },
+        "q4": { "type": "qa", "settings": { "question": "What occasions are your hampers suitable for?", "answer": "Our hampers are perfect for weddings and bridal gifting, festive celebrations, corporate gifting, baby showers and birthdays, housewarming gifts, anniversaries, and thoughtful everyday gifting." } },
+        "q5": { "type": "qa", "settings": { "question": "Can I include a personal message?", "answer": "Yes. You can add a heartfelt note or message card to make your gift even more special and memorable." } },
+        "q6": { "type": "qa", "settings": { "question": "Do you offer corporate gifting solutions?", "answer": "Yes. We create bespoke corporate hampers tailored to your brand identity, occasion and budget. From employee appreciation to festive gifting and client celebrations, we help you leave a lasting impression. Please contact us for bulk or corporate orders." } },
+        "q7": { "type": "qa", "settings": { "question": "Do you ship across India?", "answer": "Yes, we ship pan India with secure packaging to ensure your hamper reaches safely and beautifully. Shipping timelines may vary depending on the destination and the level of customisation." } },
+        "q8": { "type": "qa", "settings": { "question": "How long does it take to process an order?", "answer": "As every Zariya House creation is thoughtfully handcrafted and curated, the time required depends on the type of hamper and the artisanal processes involved. Our hampers are typically ready within 5 days, with some taking up to 4 weeks. Customised and bulk orders may take longer depending on personalisation, quantity and materials. Contact us with your requirement and we will share an exact timeline." } },
+        "q9": { "type": "qa", "settings": { "question": "Can I place a bulk order?", "answer": "Certainly. We welcome bulk orders for weddings, events, festive gifting and corporate requirements. Please reach out through our Contact page or WhatsApp, and we will assist you personally." } },
+        "q10": { "type": "qa", "settings": { "question": "What is your return or cancellation policy?", "answer": "As many of our products are handcrafted and personalised, returns or exchanges may not always be possible. However, if your order arrives damaged or incorrect, please contact us within 48 hours of delivery, and we will do our best to resolve the issue promptly." } },
+        "q11": { "type": "qa", "settings": { "question": "Why choose Zariya House?", "answer": "Because we believe gifts should be more than objects. Every Zariya House creation is thoughtfully curated to celebrate Indian craftsmanship, preserve stories of heritage, and create memories that stay long after the moment has passed. From Hands to Hearts." } }
+      },
+      "block_order": ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10", "q11"],
+      "settings": {}
+    }
+  },
+  "order": ["faqs"]
+}

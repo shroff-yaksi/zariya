@@ -1,0 +1,32 @@
+{%- comment -%} Zariya House — Trust / USP bar {%- endcomment -%}
+<div class="zariya">
+  <section class="zh-trust"><div class="zh-trust__inner">
+    {%- for block in section.blocks -%}
+      {%- unless forloop.first -%}<span class="zh-trust__sep"></span>{%- endunless -%}
+      <span class="zh-trust__item" {{ block.shopify_attributes }}>{% render 'zariya-icons', name: block.settings.icon %} {{ block.settings.label }}</span>
+    {%- endfor -%}
+  </div></section>
+</div>
+
+{% schema %}
+{
+  "name": "Zariya Trust Bar",
+  "blocks": [
+    { "type": "item", "name": "Item", "settings": [
+      { "type": "select", "id": "icon", "label": "Icon", "default": "truck",
+        "options": [
+          {"value":"truck","label":"Truck"},{"value":"giftbox","label":"Gift box"},
+          {"value":"pen","label":"Pen"},{"value":"shield","label":"Shield"},
+          {"value":"heart","label":"Heart"},{"value":"gem","label":"Gem"}
+        ] },
+      { "type": "text", "id": "label", "label": "Label", "default": "Free Pan-India Delivery" }
+    ]}
+  ],
+  "presets": [{ "name": "Zariya Trust Bar", "blocks": [
+    {"type":"item","settings":{"icon":"truck","label":"Free Pan-India Delivery"}},
+    {"type":"item","settings":{"icon":"giftbox","label":"Luxury Gift Packaging"}},
+    {"type":"item","settings":{"icon":"pen","label":"Custom Hamper Personalisation"}},
+    {"type":"item","settings":{"icon":"shield","label":"Secure Payments"}}
+  ]}]
+}
+{% endschema %}

@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "collection": {
+      "type": "zariya-collection",
+      "blocks": {
+        "s1": { "type": "coming_soon", "settings": { "fallback": "heritage-chest-3.jpg", "category": "Festive", "name": "The Festive Edit" } },
+        "s2": { "type": "coming_soon", "settings": { "fallback": "heritage-chest-1.jpg", "category": "Wedding", "name": "The Wedding Trousseau" } },
+        "s3": { "type": "coming_soon", "settings": { "fallback": "heritage-chest-1.jpg", "category": "Corporate", "name": "The Corporate Signature" } },
+        "s4": { "type": "coming_soon", "settings": { "fallback": "heritage-chest-3.jpg", "category": "Kids", "name": "Little Wonders" } },
+        "s5": { "type": "coming_soon", "settings": { "fallback": "heritage-chest-1.jpg", "category": "Wedding", "name": "The Anniversary Keepsake" } },
+        "s6": { "type": "coming_soon", "settings": { "fallback": "heritage-chest-3.jpg", "category": "Festive", "name": "Festive Glow Hamper" } },
+        "s7": { "type": "coming_soon", "settings": { "fallback": "heritage-chest-1.jpg", "category": "Festive", "name": "Diwali Radiance Hamper" } }
+      },
+      "block_order": ["s1", "s2", "s3", "s4", "s5", "s6", "s7"],
+      "settings": {}
+    }
+  },
+  "order": ["collection"]
+}
